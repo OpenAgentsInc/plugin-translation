@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-
 	"github.com/extism/go-pdk"
 )
 
@@ -16,6 +15,7 @@ var API_KEY string = "YOUR_API_KEY"
 type input struct {
 	Text string `json:"text"`
 	To   string `json:"to"`
+	ApiKey string `json:"api_key"`
 }
 
 type translationResponse struct {
@@ -33,6 +33,11 @@ func run() int32 {
 		return 1
 	}
 
+	apiKey := in.ApiKey
+	if apiKey == "" {
+		apiKey = API_KEY
+	}
+
 	payload := []byte(fmt.Sprintf(`[
 		{
 			"Text": "%s"
@@ -43,7 +48,7 @@ func run() int32 {
 
 	req := pdk.NewHTTPRequest(pdk.MethodPost, url)
 	req.SetHeader("content-type", "application/json")
-	req.SetHeader("X-RapidAPI-Key", API_KEY)
+	req.SetHeader("X-RapidAPI-Key", apiKey)
 	req.SetHeader("X-RapidAPI-Host", "microsoft-translator-text.p.rapidapi.com")
 	req.SetBody(bytes.NewBuffer(payload).Bytes())
 	res := req.Send()
