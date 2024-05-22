@@ -66,7 +66,7 @@ func run() int32 {
 	}
 
 	if len(translation) > 0 && len(translation[0].Translations) > 0 {
-		pdk.OutputString("Translated: " + translation[0].Translations[0].Text + "\n")
+		pdk.OutputString(translation[0].Translations[0].Text)
 	} else {
 		pdk.SetError(fmt.Errorf("no translation found"))
 		return 1
